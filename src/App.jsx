@@ -155,9 +155,9 @@ return (
                   {/* Right Side: Download Button */}
                   <button 
                     className="p-2 rounded-full hover:bg-black/10 transition-colors opacity-80 hover:opacity-100"
-                    title="Download Card"
+                    title="Share Card"
                   >
-                    <Download className="w-5 h-5 sm:w-6 sm:h-6 text-current" />
+                    <Share className="w-5 h-5 sm:w-6 sm:h-6 text-current" />
                   </button>
                 </div>
               </CardContent>
