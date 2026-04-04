@@ -154,6 +154,11 @@ return (
           </div>
         )}
       </div>
+      <div className="mt-auto pt-8 z-10 text-center">
+        <p className="text-zinc-500 text-xs sm:text-sm font-medium tracking-widest opacity-80">
+          xoxo, Johann
+        </p>
+      </div>
     </div>
   );
 }
