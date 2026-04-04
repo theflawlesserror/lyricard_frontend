@@ -202,7 +202,7 @@ return (
                   {/* Left Side: Logo */}
                   <div className="flex items-center gap-2">
                     <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-current fill-current shrink-0" />
-                    <span className="font-bold text-lg sm:text-xl tracking-tighter">I L Y</span>
+                    <span className="font-bold text-lg sm:text-xl tracking-tighter leading-none -mt-0.5 sm:-mt-1">I L Y</span>
                   </div>
                   
                   {/* Right Side: Download Button */}
