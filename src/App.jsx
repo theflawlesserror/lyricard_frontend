@@ -57,7 +57,7 @@ function App() {
   };
 
 return (
-    <div className="relative min-h-screen bg-black flex flex-col items-center py-10 px-4 font-sans selection:bg-white/20">
+    <div className="relative min-h-screen bg-black flex flex-col items-center py-10 px-4 font-sans selection:bg-white/20 overflow-x-hidden">
       
       {/* Background Aurora */}
       <div 
@@ -101,7 +101,7 @@ return (
       {/* The Lyric Card - Restored to PRO size */}
       <div className="relative z-10 w-full flex justify-center pb-12">
         {isLoading && (
-          <Skeleton className="w-[450px] h-[550px] rounded-[40px] bg-zinc-900/40 border border-white/5" />
+          <Skeleton className="w-full max-w-[450px] h-[550px] rounded-[40px] bg-zinc-900/40 border border-white/5" />
         )}
 
         {cardData && !isLoading && (
@@ -110,7 +110,7 @@ return (
               className="w-[450px] min-h-[550px] border-none shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] rounded-[45px] overflow-hidden flex flex-col"
               style={{ backgroundColor: cardData.dominant_color_hex }}
             >
-              <CardContent className="p-10 flex flex-col h-full">
+              <CardContent className="p-6 sm:p-10 flex flex-col h-full">
                 {/* Header: Album Art & Info */}
                 <div className="flex items-start gap-5 mb-10">
                   <img 
