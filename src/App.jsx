@@ -172,13 +172,13 @@ return (
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shadow-lg object-cover shrink-0"
                   />
                   <div 
-                    className="flex flex-col pt-0.5 sm:pt-1 overflow-hidden"
+                    className="flex flex-col pt-0.5 sm:pt-1 flex-1 min-w-0"
                     style={{ color: getTextColor(cardData.dominant_color_hex) }}
                   >
-                    <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight mb-1 truncate">
+                    <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight mb-1 break-words">
                       {cardData.target_song}
                     </h2>
-                    <p className="text-base sm:text-lg font-medium opacity-70 truncate">
+                    <p className="text-base sm:text-lg font-medium opacity-70 break-words">
                       {cardData.artist}
                     </p>
                   </div>
