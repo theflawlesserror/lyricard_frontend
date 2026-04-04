@@ -155,7 +155,7 @@ return (
         )}
       </div>
       <div className="mt-auto pt-8 z-10 text-center">
-        <p className="text-zinc-500 text-xs sm:text-sm font-medium tracking-widest opacity-80">
+        <p className="text-zinc-500 text-xs sm:text-sm font-medium tracking-widest">
           <span className="text-red-500">xoxo, </span>
           <span className="text-white">Johann</span>
         </p>
