@@ -150,7 +150,7 @@ return (
                       <div className="w-3 h-3 sm:w-4 sm:h-4 bg-transparent border-2 border-current rounded-full" 
                            style={{ borderColor: cardData.dominant_color_hex }} />
                    </div>
-                   <span className="font-bold text-lg sm:text-xl tracking-tighter">Lyricard</span>
+                   <span className="font-bold text-lg sm:text-xl tracking-tighter">I.L.Y</span>
                 </div>
               </CardContent>
             </Card>
