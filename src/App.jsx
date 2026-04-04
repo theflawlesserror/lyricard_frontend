@@ -57,36 +57,36 @@ function App() {
   };
 
 return (
-    <div className="relative min-h-screen bg-black flex flex-col items-center py-10 px-4 font-sans selection:bg-white/20 overflow-x-hidden">
+    <div className="relative min-h-screen w-full max-w-[100vw] bg-black flex flex-col items-center py-8 sm:py-10 px-4 sm:px-6 font-sans selection:bg-white/20 overflow-x-hidden">
       
       {/* Background Aurora */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[140px] opacity-25 pointer-events-none transition-colors duration-700 ease-in-out"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] sm:w-[800px] sm:h-[800px] rounded-full blur-[100px] sm:blur-[140px] opacity-25 pointer-events-none transition-colors duration-700 ease-in-out"
         style={{ backgroundColor: cardData ? cardData.dominant_color_hex : 'transparent' }}
       />
 
       {/* Title Section */}
-      <div className="relative z-10 text-center space-y-2 mb-10">
-        <h1 className="text-3xl font-bold text-white tracking-tight whitespace-nowrap">
-          Happy 20th Birthday Hrishikha <span className="text-red-500">❤️</span>
+      <div className="relative z-10 w-full max-w-sm text-center space-y-2 mb-8 sm:mb-10">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-tight">
+          Happy 20th Birthday Hrishikha <span className="text-red-500 inline-block">❤️</span>
         </h1>
-        <p className="text-zinc-500 text-sm font-medium">For my favorite music-lover on the planet</p>
+        <p className="text-zinc-500 text-xs sm:text-sm font-medium px-2">For my favorite music-lover on the planet</p>
       </div>
 
       {/* Input Section */}
-      <div className="relative z-10 w-full max-w-sm flex flex-col gap-3 mb-12">
+      <div className="relative z-10 w-full max-w-sm flex flex-col gap-3 mb-10">
         <div className="flex flex-col gap-2.5">
           <Input 
             placeholder="Artist (eg: Kendrick Lamar)" 
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
-            className="bg-zinc-900/60 backdrop-blur-2xl border-white/5 text-zinc-100 h-12 rounded-xl"
+            className="bg-zinc-900/60 backdrop-blur-2xl border-white/5 text-zinc-100 h-12 rounded-xl w-full"
           />
           <Input 
             placeholder="Emotion (eg: Sadness)" 
             value={emotion}
             onChange={(e) => setEmotion(e.target.value)}
-            className="bg-zinc-900/60 backdrop-blur-2xl border-white/5 text-zinc-100 h-12 rounded-xl"
+            className="bg-zinc-900/60 backdrop-blur-2xl border-white/5 text-zinc-100 h-12 rounded-xl w-full"
           />
           <Button 
             onClick={handleGenerate} 
@@ -98,59 +98,59 @@ return (
         </div>
       </div>
 
-      {/* The Lyric Card - Restored to PRO size */}
-      <div className="relative z-10 w-full flex justify-center pb-12">
+      {/* The Lyric Card */}
+      <div className="relative z-10 w-full max-w-sm sm:max-w-[450px] flex justify-center pb-12">
         {isLoading && (
-          <Skeleton className="w-full max-w-[450px] h-[550px] rounded-[40px] bg-zinc-900/40 border border-white/5" />
+          <Skeleton className="w-full aspect-[4/5] sm:h-[550px] rounded-[32px] sm:rounded-[40px] bg-zinc-900/40 border border-white/5" />
         )}
 
         {cardData && !isLoading && (
-          <div className="animate-in fade-in zoom-in-95 duration-500">
+          <div className="animate-in fade-in zoom-in-95 duration-500 w-full">
             <Card 
-              className="w-[450px] min-h-[550px] border-none shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] rounded-[45px] overflow-hidden flex flex-col"
+              className="w-full max-w-[450px] min-h-[450px] sm:min-h-[550px] border-none shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] sm:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] rounded-[32px] sm:rounded-[45px] overflow-hidden flex flex-col mx-auto"
               style={{ backgroundColor: cardData.dominant_color_hex }}
             >
-              <CardContent className="p-6 sm:p-10 flex flex-col h-full">
+              <CardContent className="p-7 sm:p-10 flex flex-col h-full">
                 {/* Header: Album Art & Info */}
-                <div className="flex items-start gap-5 mb-10">
+                <div className="flex items-start gap-4 sm:gap-5 mb-8 sm:mb-10">
                   <img 
                     src={cardData.album_art_url} 
                     alt="Album Art" 
-                    className="w-20 h-20 rounded-xl shadow-lg object-cover"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shadow-lg object-cover shrink-0"
                   />
                   <div 
-                    className="flex flex-col pt-1"
+                    className="flex flex-col pt-0.5 sm:pt-1 overflow-hidden"
                     style={{ color: getTextColor(cardData.dominant_color_hex) }}
                   >
-                    <h2 className="text-2xl font-extrabold tracking-tight leading-none mb-1">
+                    <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight mb-1 truncate">
                       {cardData.target_song}
                     </h2>
-                    <p className="text-lg font-medium opacity-70">
+                    <p className="text-base sm:text-lg font-medium opacity-70 truncate">
                       {cardData.artist}
                     </p>
                   </div>
                 </div>
 
-                {/* Body: The Lyrics (The centerpiece) */}
+                {/* Body: The Lyrics */}
                 <div 
-                  className="flex-grow flex items-center mb-10"
+                  className="flex-grow flex items-center mb-8 sm:mb-10"
                   style={{ color: getTextColor(cardData.dominant_color_hex) }}
                 >
-                  <p className="text-[28px] font-black leading-[1.15] whitespace-pre-wrap tracking-tight">
+                  <p className="text-2xl sm:text-[28px] font-black leading-[1.2] sm:leading-[1.15] whitespace-pre-wrap tracking-tight break-words">
                     {cardData.lyrics_snippet}
                   </p>
                 </div>
 
-                {/* Branding Footer (Mimics the logo in your reference) */}
+                {/* Branding Footer */}
                 <div 
-                  className="flex items-center gap-2 pt-4 border-t border-black/5"
+                  className="flex items-center gap-2 pt-4 border-t border-black/5 mt-auto"
                   style={{ color: getTextColor(cardData.dominant_color_hex) }}
                 >
-                   <div className="w-8 h-8 rounded-full bg-current flex items-center justify-center">
-                      <div className="w-4 h-4 bg-transparent border-2 border-current rounded-full" 
+                   <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-current flex items-center justify-center shrink-0">
+                      <div className="w-3 h-3 sm:w-4 sm:h-4 bg-transparent border-2 border-current rounded-full" 
                            style={{ borderColor: cardData.dominant_color_hex }} />
                    </div>
-                   <span className="font-bold text-xl tracking-tighter">Lyricard</span>
+                   <span className="font-bold text-lg sm:text-xl tracking-tighter">Lyricard</span>
                 </div>
               </CardContent>
             </Card>
