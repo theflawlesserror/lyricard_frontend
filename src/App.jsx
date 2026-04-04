@@ -1,10 +1,9 @@
-import { useState, useRef } from 'react';
-import html2canvas from 'html2canvas';
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, Heart, Share } from "lucide-react";
+import { Loader2, Heart } from "lucide-react";
 
 // The Luminance Utility: Determines if text should be dark or light
 const getTextColor = (hexColor) => {
@@ -24,8 +23,6 @@ function App() {
   const [cardData, setCardData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  const cardRef = useRef(null)
 
   const handleGenerate = async () => {
     if (!artist || !emotion) return;
@@ -56,53 +53,6 @@ function App() {
       }
     } finally {
       setIsLoading(false);
-    }
-  };
-
-const shareCard = async () => {
-    if (!cardRef.current) return;
-
-    try {
-      // THE FONT FIX: Force engine to wait for fonts to load
-      await document.fonts.ready;
-
-      const canvas = await html2canvas(cardRef.current, {
-        useCORS: true, 
-        scale: 3,      
-        backgroundColor: null, 
-        // THE CROP FIX: Tell it to ignore mobile scrolling
-        scrollY: -window.scrollY, 
-        windowWidth: document.documentElement.offsetWidth,
-      });
-
-      const fileName = `${artist ? artist.replace(/\s+/g, '_') : 'lyricard'}_export.png`;
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-      const file = new File([blob], fileName, { type: 'image/png' });
-
-      if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: 'Lyricard',
-          });
-          return; 
-        } catch (shareError) {
-          console.log("Share cancelled", shareError);
-          return;
-        }
-      }
-
-      const image = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = image;
-      link.download = fileName;
-      link.click();
-
-    } catch (err) {
-      console.error("Failed to export image:", err);
-      alert("Oops! Something went wrong while saving the card.");
     }
   };
 
@@ -157,8 +107,7 @@ return (
         {cardData && !isLoading && (
           <div className="animate-in fade-in zoom-in-95 duration-500 w-full">
             <Card 
-              ref={cardRef}
-              className="font-sans w-full max-w-[450px] min-h-[450px] sm:min-h-[550px] border-none shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] sm:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] rounded-[32px] sm:rounded-[45px] overflow-hidden flex flex-col mx-auto"
+              className="w-full max-w-[450px] min-h-[450px] sm:min-h-[550px] border-none shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] sm:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] rounded-[32px] sm:rounded-[45px] overflow-hidden flex flex-col mx-auto"
               style={{ backgroundColor: cardData.dominant_color_hex }}
             >
               <CardContent className="p-7 sm:p-10 flex flex-col h-full">
@@ -170,13 +119,13 @@ return (
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shadow-lg object-cover shrink-0"
                   />
                   <div 
-                    className="flex flex-col pt-0.5 sm:pt-1 w-full"
+                    className="flex flex-col pt-0.5 sm:pt-1 overflow-hidden"
                     style={{ color: getTextColor(cardData.dominant_color_hex) }}
                   >
-                    <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight mb-1 break-words">
+                    <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight mb-1 truncate">
                       {cardData.target_song}
                     </h2>
-                    <p className="text-base sm:text-lg font-medium opacity-70 break-words">
+                    <p className="text-base sm:text-lg font-medium opacity-70 truncate">
                       {cardData.artist}
                     </p>
                   </div>
@@ -194,23 +143,11 @@ return (
 
                 {/* Branding Footer */}
                 <div 
-                  className="flex items-center justify-between pt-4 border-t border-black/5 mt-auto w-full flex-nowrap"
+                  className="flex items-center gap-2 pt-4 border-t border-black/5 mt-auto"
                   style={{ color: getTextColor(cardData.dominant_color_hex) }}
                 >
-                  {/* Left Side: Logo */}
-                  <div className="flex items-center gap-2">
-                    <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-current fill-current shrink-0" />
-                    <span className="font-bold text-lg sm:text-xl tracking-tighter leading-none -mt-0.5 sm:-mt-1">I L Y</span>
-                  </div>
-                  
-                  {/* Right Side: Download Button */}
-                  <button 
-                    onClick={shareCard}
-                    className="p-2 rounded-full hover:bg-black/10 transition-colors opacity-80 hover:opacity-100"
-                    title="Share Card"
-                  >
-                    <Share className="w-5 h-5 sm:w-6 sm:h-6 text-current" />
-                  </button>
+                  <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-current fill-current shrink-0" />
+                  <span className="font-bold text-lg sm:text-xl tracking-tighter">I L Y</span>
                 </div>
               </CardContent>
             </Card>
