@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2 } from "lucide-react";
+import { Loader2, Heart } from "lucide-react";
 
 // The Luminance Utility: Determines if text should be dark or light
 const getTextColor = (hexColor) => {
@@ -146,11 +146,8 @@ return (
                   className="flex items-center gap-2 pt-4 border-t border-black/5 mt-auto"
                   style={{ color: getTextColor(cardData.dominant_color_hex) }}
                 >
-                   <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-current flex items-center justify-center shrink-0">
-                      <div className="w-3 h-3 sm:w-4 sm:h-4 bg-transparent border-2 border-current rounded-full" 
-                           style={{ borderColor: cardData.dominant_color_hex }} />
-                   </div>
-                   <span className="font-bold text-lg sm:text-xl tracking-tighter">I L Y</span>
+                  <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-current fill-current shrink-0" />
+                  <span className="font-bold text-lg sm:text-xl tracking-tighter">I L Y</span>
                 </div>
               </CardContent>
             </Card>
