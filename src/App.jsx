@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,6 +24,8 @@ function App() {
   const [cardData, setCardData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  const cardRef = useRef(null)
 
   const handleGenerate = async () => {
     if (!artist || !emotion) return;
@@ -53,6 +56,55 @@ function App() {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const shareCard = async () => {
+    if (!cardRef.current) return;
+
+    try {
+      // 1. Tell html2canvas to take the picture
+      const canvas = await html2canvas(cardRef.current, {
+        useCORS: true, 
+        scale: 3,      
+        backgroundColor: null, 
+      });
+
+      const fileName = `${artist ? artist.replace(/\s+/g, '_') : 'lyricard'}_export.png`;
+
+      // 2. Simple regex to check if the user is on a mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      // 3. Convert the canvas to a physical Blob/File object (required for Mobile Sharing)
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+      const file = new File([blob], fileName, { type: 'image/png' });
+
+      // 4. If Mobile AND the browser supports file sharing -> Open Share Sheet
+      if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'Lyricard',
+            text: 'Check out this lyric card!'
+          });
+          return; // Exit the function so it doesn't also download it
+        } catch (shareError) {
+          // If the user closes the share sheet without sharing, just silently catch the error
+          console.log("Share cancelled", shareError);
+          return;
+        }
+      }
+
+      // 5. If PC (or if mobile sharing isn't supported) -> Download normally
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = fileName;
+      link.click();
+
+    } catch (err) {
+      console.error("Failed to export image:", err);
+      alert("Oops! Something went wrong while saving the card.");
     }
   };
 
@@ -107,6 +159,7 @@ return (
         {cardData && !isLoading && (
           <div className="animate-in fade-in zoom-in-95 duration-500 w-full">
             <Card 
+              ref={cardRef}
               className="w-full max-w-[450px] min-h-[450px] sm:min-h-[550px] border-none shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] sm:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] rounded-[32px] sm:rounded-[45px] overflow-hidden flex flex-col mx-auto"
               style={{ backgroundColor: cardData.dominant_color_hex }}
             >
@@ -154,6 +207,7 @@ return (
                   
                   {/* Right Side: Download Button */}
                   <button 
+                    onClick={shareCard}
                     className="p-2 rounded-full hover:bg-black/10 transition-colors opacity-80 hover:opacity-100"
                     title="Share Card"
                   >
