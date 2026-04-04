@@ -59,43 +59,41 @@ function App() {
     }
   };
 
-  const shareCard = async () => {
+const shareCard = async () => {
     if (!cardRef.current) return;
 
     try {
-      // 1. Tell html2canvas to take the picture
+      // THE FONT FIX: Force engine to wait for fonts to load
+      await document.fonts.ready;
+
       const canvas = await html2canvas(cardRef.current, {
         useCORS: true, 
         scale: 3,      
         backgroundColor: null, 
+        // THE CROP FIX: Tell it to ignore mobile scrolling
+        scrollY: -window.scrollY, 
+        windowWidth: document.documentElement.offsetWidth,
       });
 
       const fileName = `${artist ? artist.replace(/\s+/g, '_') : 'lyricard'}_export.png`;
-
-      // 2. Simple regex to check if the user is on a mobile device
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-      // 3. Convert the canvas to a physical Blob/File object (required for Mobile Sharing)
       const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
       const file = new File([blob], fileName, { type: 'image/png' });
 
-      // 4. If Mobile AND the browser supports file sharing -> Open Share Sheet
       if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
             files: [file],
             title: 'Lyricard',
-            text: 'Check out this lyric card!'
           });
-          return; // Exit the function so it doesn't also download it
+          return; 
         } catch (shareError) {
-          // If the user closes the share sheet without sharing, just silently catch the error
           console.log("Share cancelled", shareError);
           return;
         }
       }
 
-      // 5. If PC (or if mobile sharing isn't supported) -> Download normally
       const image = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = image;
@@ -160,7 +158,7 @@ return (
           <div className="animate-in fade-in zoom-in-95 duration-500 w-full">
             <Card 
               ref={cardRef}
-              className="w-full max-w-[450px] min-h-[450px] sm:min-h-[550px] border-none shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] sm:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] rounded-[32px] sm:rounded-[45px] overflow-hidden flex flex-col mx-auto"
+              className="font-sans w-full max-w-[450px] min-h-[450px] sm:min-h-[550px] border-none shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] sm:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] rounded-[32px] sm:rounded-[45px] overflow-hidden flex flex-col mx-auto"
               style={{ backgroundColor: cardData.dominant_color_hex }}
             >
               <CardContent className="p-7 sm:p-10 flex flex-col h-full">
@@ -172,7 +170,7 @@ return (
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl shadow-lg object-cover shrink-0"
                   />
                   <div 
-                    className="flex flex-col pt-0.5 sm:pt-1 flex-1 min-w-0"
+                    className="flex flex-col pt-0.5 sm:pt-1 w-full"
                     style={{ color: getTextColor(cardData.dominant_color_hex) }}
                   >
                     <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight mb-1 break-words">
@@ -196,7 +194,7 @@ return (
 
                 {/* Branding Footer */}
                 <div 
-                  className="flex items-center justify-between pt-4 border-t border-black/5 mt-auto w-full"
+                  className="flex items-center justify-between pt-4 border-t border-black/5 mt-auto w-full flex-nowrap"
                   style={{ color: getTextColor(cardData.dominant_color_hex) }}
                 >
                   {/* Left Side: Logo */}
