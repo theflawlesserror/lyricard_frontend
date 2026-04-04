@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, Heart } from "lucide-react";
+import { Loader2, Heart, Share } from "lucide-react";
 
 // The Luminance Utility: Determines if text should be dark or light
 const getTextColor = (hexColor) => {
@@ -143,11 +143,22 @@ return (
 
                 {/* Branding Footer */}
                 <div 
-                  className="flex items-center gap-2 pt-4 border-t border-black/5 mt-auto"
+                  className="flex items-center justify-between pt-4 border-t border-black/5 mt-auto w-full"
                   style={{ color: getTextColor(cardData.dominant_color_hex) }}
                 >
-                  <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-current fill-current shrink-0" />
-                  <span className="font-bold text-lg sm:text-xl tracking-tighter">I L Y</span>
+                  {/* Left Side: Logo */}
+                  <div className="flex items-center gap-2">
+                    <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-current fill-current shrink-0" />
+                    <span className="font-bold text-lg sm:text-xl tracking-tighter">I L Y</span>
+                  </div>
+                  
+                  {/* Right Side: Download Button */}
+                  <button 
+                    className="p-2 rounded-full hover:bg-black/10 transition-colors opacity-80 hover:opacity-100"
+                    title="Download Card"
+                  >
+                    <Download className="w-5 h-5 sm:w-6 sm:h-6 text-current" />
+                  </button>
                 </div>
               </CardContent>
             </Card>
