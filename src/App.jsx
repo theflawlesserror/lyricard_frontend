@@ -80,13 +80,13 @@ return (
             placeholder="Artist (eg: Kendrick Lamar)" 
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
-            className="bg-zinc-900/60 backdrop-blur-2xl border-white/5 text-zinc-100 h-12 rounded-xl w-full"
+            className="bg-zinc-900/60 backdrop-blur-2xl border-white/5 text-zinc-100/70 h-12 rounded-xl w-full"
           />
           <Input 
             placeholder="Emotion (eg: Sadness)" 
             value={emotion}
             onChange={(e) => setEmotion(e.target.value)}
-            className="bg-zinc-900/60 backdrop-blur-2xl border-white/5 text-zinc-100 h-12 rounded-xl w-full"
+            className="bg-zinc-900/60 backdrop-blur-2xl border-white/5 text-zinc-100/70 h-12 rounded-xl w-full"
           />
           <Button 
             onClick={handleGenerate} 
